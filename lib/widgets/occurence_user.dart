@@ -22,17 +22,33 @@ class OccurenceUserState extends State<OccurenceUser> {
     Occurence(
       id: 2,
       title: 'Refunded my controller',
+      value: null,
       text: 'It broke',
       date: DateTime.now()
     ),
   ];
+
+  _addOccurence(String title, String detail, double? value) {
+    int id = (_occurences.last.id + 1);
+    final Occurence occ = Occurence(
+      id: id,
+      title: title,
+      value: value,
+      text: detail,
+      date: DateTime.now()         
+    );
+
+    setState(() {
+      _occurences.add(occ);
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        OcurrenceCreate(onSubmit: _addOccurence),
         OccurenceCard(occurences: _occurences),
-        const OcurrenceCreate()
       ]
     );
   }

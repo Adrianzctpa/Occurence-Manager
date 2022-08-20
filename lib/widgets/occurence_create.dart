@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
 
 class OcurrenceCreate extends StatelessWidget {
-  const OcurrenceCreate({
-    this.id,
-    this.title,
-    this.value,
-    this.text,
-    this.date,
-    super.key
-  });
+  const OcurrenceCreate({required this.onSubmit, super.key});
 
-  final int? id;
-  final String? title;
-  final double? value;
-  final String? text;
-  final DateTime? date;
+  final void Function(String, String, double?) onSubmit;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +45,12 @@ class OcurrenceCreate extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () => debugPrint('${titleController.text}, ${detailController.text}, ${valueController.text}'),
+              onPressed: () {
+                final String title = titleController.text;
+                final String detail = detailController.text;
+                final double? value = double.tryParse(valueController.text);
+                onSubmit(title, detail, value);
+              },
               style: ElevatedButton.styleFrom(
                 primary: Colors.white,
                 onPrimary: Colors.purple,

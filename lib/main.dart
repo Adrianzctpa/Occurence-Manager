@@ -21,14 +21,16 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('General-Purposes App')
       ),
-      body: Column(
-        children: const <Widget>[
-          Card(
-            elevation: 5,
-            child: Text('Slot 1'), 
-          ),
-          OccurenceUser()
-        ]
+      body: SingleChildScrollView(
+        child: Column(
+          children: const <Widget>[
+            Card(
+              elevation: 5,
+              child: Text('Slot 1'), 
+            ),
+            OccurenceUser()
+          ]
+        ),
       )
     );
   }
