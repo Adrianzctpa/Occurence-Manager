@@ -1,16 +1,33 @@
 import 'package:flutter/material.dart';
 
-class OcurrenceCreate extends StatelessWidget {
+class OcurrenceCreate extends StatefulWidget {
   const OcurrenceCreate({required this.onSubmit, super.key});
 
   final void Function(String, String, double?) onSubmit;
 
   @override
+  State<OcurrenceCreate> createState() => _OcurrenceCreateState();
+}
+
+class _OcurrenceCreateState extends State<OcurrenceCreate> {
+  @override
   Widget build(BuildContext context) {
     final titleController = TextEditingController();
     final detailController = TextEditingController();
     final valueController = TextEditingController();
-    
+
+    void _handleSubmit() {
+      final String title = titleController.text;
+      final String detail = detailController.text;
+      final double? value = double.tryParse(valueController.text);
+      
+      if (title.isEmpty || detail.isEmpty) {
+        return;
+      }
+
+      widget.onSubmit(title, detail, value);
+    }
+
     return Card(
       elevation: 5,
       child: Padding(
@@ -19,6 +36,7 @@ class OcurrenceCreate extends StatelessWidget {
           children: <Widget>[
             TextField(
               controller: titleController,
+              onSubmitted: (_) =>_handleSubmit(),
               obscureText: false,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -28,6 +46,7 @@ class OcurrenceCreate extends StatelessWidget {
             const SizedBox(height: 10),
             TextField(
               controller: detailController,
+              onSubmitted: (_) =>_handleSubmit(),
               obscureText: false,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -37,6 +56,8 @@ class OcurrenceCreate extends StatelessWidget {
             const SizedBox(height: 10),
             TextField(
               controller: valueController,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              onSubmitted: (_) =>_handleSubmit(),
               obscureText: false,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -45,12 +66,7 @@ class OcurrenceCreate extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             ElevatedButton(
-              onPressed: () {
-                final String title = titleController.text;
-                final String detail = detailController.text;
-                final double? value = double.tryParse(valueController.text);
-                onSubmit(title, detail, value);
-              },
+              onPressed: _handleSubmit,
               style: ElevatedButton.styleFrom(
                 primary: Colors.white,
                 onPrimary: Colors.purple,
