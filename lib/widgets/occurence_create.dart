@@ -10,24 +10,24 @@ class OcurrenceCreate extends StatefulWidget {
 }
 
 class _OcurrenceCreateState extends State<OcurrenceCreate> {
-  @override
-  Widget build(BuildContext context) {
-    final titleController = TextEditingController();
-    final detailController = TextEditingController();
-    final valueController = TextEditingController();
+  final titleController = TextEditingController();
+  final detailController = TextEditingController();
+  final valueController = TextEditingController();
 
-    void _handleSubmit() {
-      final String title = titleController.text;
-      final String detail = detailController.text;
-      final double? value = double.tryParse(valueController.text);
-      
-      if (title.isEmpty || detail.isEmpty) {
-        return;
-      }
-
-      widget.onSubmit(title, detail, value);
+  void _handleSubmit() {
+    final String title = titleController.text;
+    final String detail = detailController.text;
+    final double value = double.tryParse(valueController.text) ?? 0;
+    
+    if (title.isEmpty || detail.isEmpty) {
+      return;
     }
 
+    widget.onSubmit(title, detail, value);
+  }
+  
+  @override
+  Widget build(BuildContext context) {
     return Card(
       elevation: 5,
       child: Padding(

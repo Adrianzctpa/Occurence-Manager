@@ -7,72 +7,81 @@ class OccurenceCard extends StatelessWidget {
 
   final List<Occurence> occurences;
 
-  bool checkValue(Occurence oc) {
-    if (oc.value == null) return false;
-    
-    return true;
-  } 
-
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 500,
-      child: ListView.builder(
-        itemCount: occurences.length, 
-        itemBuilder: (ctx, i) {
-          final Occurence oc = occurences[i];
-          return Center(
-            child: Card(
-              child: SizedBox(
-                width: 500,
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 15, 
-                        vertical: 10
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.purple,
-                          width: 1,
-                        )
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      child: Text(DateFormat('d MMM y').format(oc.date),
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.purple
-                        )
-                      ),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          oc.title,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          )
-                        ),
-                        Text(
-                          oc.text,
-                          style: const TextStyle(
-                            color: Colors.grey
-                          )
-                        ),
-                        checkValue(oc) 
-                        ? Text(oc.value!.toStringAsFixed(2)) 
-                        : const Text('No value given')
-                      ]
-                    )
-                  ]
+    return Center(
+      child: SizedBox(
+        height: 500,
+        child: occurences.isEmpty 
+        ? Column(
+            children: <Widget>[
+              const SizedBox(height: 20),
+              const Text(
+                'No occurences!'
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                height: 200,
+                child: Image.asset(
+                  'assets/images/waiting.png',
+                  fit: BoxFit.cover,
                 ),
               ),
-            )
-          );
-        }
+            ]
+          )
+        : ListView.builder(
+            itemCount: occurences.length, 
+            itemBuilder: (ctx, i) {
+              final Occurence oc = occurences[i];
+              return Card(
+                child: SizedBox(
+                  width: 500,
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 15, 
+                          vertical: 10
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Theme.of(context).primaryColor,
+                            width: 1,
+                          )
+                        ),
+                        padding: const EdgeInsets.all(10),
+                        child: Text(DateFormat('d MMM y').format(oc.date),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
+                          )
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            oc.title,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            )
+                          ),
+                          Text(
+                            oc.text,
+                            style: const TextStyle(
+                              color: Colors.grey
+                            )
+                          ),
+                          Text(oc.value!.toStringAsFixed(2)) 
+                        ]
+                      )
+                    ]
+                  ),
+                ),
+              );
+            }
+          ),
       ),
     );
   }

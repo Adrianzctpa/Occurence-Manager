@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'models/occurence.dart';
+import 'widgets/occurence_graph.dart';
 import 'widgets/occurence_card.dart';
 import 'widgets/occurence_create.dart';
 
@@ -10,7 +11,12 @@ class GeneralApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: HomePage());
+    return MaterialApp(
+      home: const HomePage(),
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+      ),
+    );
   }
 }
 
@@ -22,25 +28,40 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _occurences = [
+  final List<Occurence> _occurences = [
     Occurence(
       id: 1,
       title: 'Bought an controller',
       value: 180.00,
       text: 'Bought a controller for my PC',
-      date: DateTime.now()
+      date: DateTime.now().subtract(const Duration(days: 33))
     ),
     Occurence(
       id: 2,
       title: 'Refunded my controller',
-      value: null,
+      value: 20.00,
       text: 'It broke',
-      date: DateTime.now()
+      date: DateTime.now().subtract(const Duration(days: 4))
+    ),
+    Occurence(
+      id: 3,
+      title: 'Refunded my controller 2',
+      value: 500.00,
+      text: 'It broke again',
+      date: DateTime.now().subtract(const Duration(days: 3))
     ),
   ];
 
+  List<Occurence> get _recentOccurences {
+    return _occurences.where((occ) {
+      return occ.date.isAfter(DateTime.now().subtract(
+        const Duration(days: 7),
+      ));
+    }).toList();
+  } 
+
   _addOccurence(String title, String detail, double? value) {
-    int id = (_occurences.last.id + 1);
+    int id = _occurences.isEmpty ? 1 : (_occurences.last.id + 1);
     final Occurence occ = Occurence(
       id: id,
       title: title,
@@ -83,15 +104,8 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            const Card(
-              elevation: 5,
-              child: Text('Slot 1'), 
-            ),
-             Column(
-              children: <Widget>[
-                OccurenceCard(occurences: _occurences),
-              ]
-            )
+            OccurenceGraph(recentOccurences: _recentOccurences),
+            OccurenceCard(occurences: _occurences)
           ]
         ),
       ),
