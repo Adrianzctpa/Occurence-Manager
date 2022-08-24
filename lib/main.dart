@@ -60,14 +60,14 @@ class _HomePageState extends State<HomePage> {
     }).toList();
   } 
 
-  _addOccurence(String title, String detail, double? value) {
+  _addOccurence(String title, String detail, double? value, DateTime date) {
     int id = _occurences.isEmpty ? 1 : (_occurences.last.id + 1);
     final Occurence occ = Occurence(
       id: id,
       title: title,
       value: value,
       text: detail,
-      date: DateTime.now()         
+      date: date         
     );
 
     setState(() {

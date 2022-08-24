@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class OcurrenceCreate extends StatefulWidget {
   const OcurrenceCreate({required this.onSubmit, super.key});
 
-  final void Function(String, String, double?) onSubmit;
+  final void Function(String, String, double?, DateTime) onSubmit;
 
   @override
   State<OcurrenceCreate> createState() => _OcurrenceCreateState();
@@ -13,17 +14,35 @@ class _OcurrenceCreateState extends State<OcurrenceCreate> {
   final titleController = TextEditingController();
   final detailController = TextEditingController();
   final valueController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
 
   void _handleSubmit() {
     final String title = titleController.text;
     final String detail = detailController.text;
     final double value = double.tryParse(valueController.text) ?? 0;
-    
+
     if (title.isEmpty || detail.isEmpty) {
       return;
     }
 
-    widget.onSubmit(title, detail, value);
+    widget.onSubmit(title, detail, value, _selectedDate);
+  }
+
+  void _showDateForm() {
+    showDatePicker(
+      context: context, 
+      initialDate: DateTime.now(), 
+      firstDate: DateTime(2010), 
+      lastDate: DateTime.now()
+    ).then((date) {
+      if (date == null) {
+        return;
+      }
+
+      setState(() {
+        _selectedDate = date;
+      });
+    });
   }
   
   @override
@@ -35,6 +54,7 @@ class _OcurrenceCreateState extends State<OcurrenceCreate> {
         child: Column(
           children: <Widget>[
             TextField(
+              maxLength: 50,
               controller: titleController,
               onSubmitted: (_) =>_handleSubmit(),
               obscureText: false,
@@ -45,6 +65,7 @@ class _OcurrenceCreateState extends State<OcurrenceCreate> {
             ),
             const SizedBox(height: 10),
             TextField(
+              maxLength: 50,
               controller: detailController,
               onSubmitted: (_) =>_handleSubmit(),
               obscureText: false,
@@ -65,11 +86,30 @@ class _OcurrenceCreateState extends State<OcurrenceCreate> {
               ),
             ),
             const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text(DateFormat('d MMM y').format(_selectedDate)),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.white,
+                    onPrimary: Colors.purple,
+                  ),
+                  onPressed: _showDateForm,
+                  child: const Text(
+                    'Select Date',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    )
+                  ),
+                )
+              ]
+            ),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: _handleSubmit,
               style: ElevatedButton.styleFrom(
-                primary: Colors.white,
-                onPrimary: Colors.purple,
+                primary: Theme.of(context).primaryColor,
                 textStyle: const TextStyle(
                   fontSize: 20, 
                 ),

@@ -57,24 +57,26 @@ class OccurenceCard extends StatelessWidget {
                           )
                         ),
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            oc.title,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            )
-                          ),
-                          Text(
-                            oc.text,
-                            style: const TextStyle(
-                              color: Colors.grey
-                            )
-                          ),
-                          Text(oc.value!.toStringAsFixed(2)) 
-                        ]
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              oc.title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              )
+                            ),
+                            Text(
+                              oc.text,
+                              style: const TextStyle(
+                                color: Colors.grey
+                              )
+                            ),
+                            Text(oc.value!.toStringAsFixed(2)) 
+                          ]
+                        ),
                       )
                     ]
                   ),

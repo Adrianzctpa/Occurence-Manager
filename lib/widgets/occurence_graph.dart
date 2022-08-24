@@ -27,14 +27,11 @@ class OccurenceGraph extends StatelessWidget {
         }
       }
 
-      debugPrint(dayLetter);
-      debugPrint('${sum / 100}');
-
       return {
         'day': dayLetter, 
         'value': sum
       };
-    });
+    }).reversed.toList();
   }
 
   double get _weekTotalValue {
