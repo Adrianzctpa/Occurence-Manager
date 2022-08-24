@@ -3,9 +3,14 @@ import 'package:intl/intl.dart';
 import '../models/occurence.dart';
 
 class OccurenceCard extends StatelessWidget {
-  const OccurenceCard({required this.occurences, super.key});
+  const OccurenceCard({
+    required this.occurences, 
+    required this.onRemove, 
+    super.key
+  });
 
   final List<Occurence> occurences;
+  final void Function(int id) onRemove;
 
   @override
   Widget build(BuildContext context) {
@@ -34,52 +39,63 @@ class OccurenceCard extends StatelessWidget {
             itemBuilder: (ctx, i) {
               final Occurence oc = occurences[i];
               return Card(
-                child: SizedBox(
-                  width: 500,
-                  child: Row(
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 15, 
-                          vertical: 10
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
+                child: Stack(
+                  children: <Widget>[ 
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 15, 
+                            vertical: 10
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Theme.of(context).primaryColor,
+                              width: 1,
+                            )
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          child: Text(DateFormat('d MMM y').format(oc.date),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
                             color: Theme.of(context).primaryColor,
-                            width: 1,
-                          )
+                            )
+                          ),
                         ),
-                        padding: const EdgeInsets.all(10),
-                        child: Text(DateFormat('d MMM y').format(oc.date),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor,
-                          )
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                oc.title,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                )
+                              ),
+                              Text(
+                                oc.text,
+                                style: const TextStyle(
+                                  color: Colors.grey
+                                )
+                              ),
+                              Text(oc.value!.toStringAsFixed(2)),
+                            ]
+                          ),
                         ),
-                      ),
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              oc.title,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              )
-                            ),
-                            Text(
-                              oc.text,
-                              style: const TextStyle(
-                                color: Colors.grey
-                              )
-                            ),
-                            Text(oc.value!.toStringAsFixed(2)) 
-                          ]
-                        ),
+                      ]
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                        color: Colors.red,
+                        onPressed: () {
+                          onRemove(oc.id);
+                        },
+                        icon: const Icon(Icons.delete)
                       )
-                    ]
-                  ),
+                    )
+                  ]
                 ),
               );
             }

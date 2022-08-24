@@ -55,7 +55,7 @@ class OccurenceGraph extends StatelessWidget {
               child: GraphBar(
                 day: occ['day'] as String, 
                 value: occ['value'] as double,
-                percentage: (occ['value'] as double) / _weekTotalValue,
+                percentage: _weekTotalValue == 0 ? 0 : (occ['value'] as double) / _weekTotalValue,
               ),
             );
           }).toList(),

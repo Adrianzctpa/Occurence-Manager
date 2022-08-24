@@ -28,29 +28,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Occurence> _occurences = [
-    Occurence(
-      id: 1,
-      title: 'Bought an controller',
-      value: 180.00,
-      text: 'Bought a controller for my PC',
-      date: DateTime.now().subtract(const Duration(days: 33))
-    ),
-    Occurence(
-      id: 2,
-      title: 'Refunded my controller',
-      value: 20.00,
-      text: 'It broke',
-      date: DateTime.now().subtract(const Duration(days: 4))
-    ),
-    Occurence(
-      id: 3,
-      title: 'Refunded my controller 2',
-      value: 500.00,
-      text: 'It broke again',
-      date: DateTime.now().subtract(const Duration(days: 3))
-    ),
-  ];
+  final List<Occurence> _occurences = [];
 
   List<Occurence> get _recentOccurences {
     return _occurences.where((occ) {
@@ -75,6 +53,14 @@ class _HomePageState extends State<HomePage> {
     });
 
     Navigator.pop(context);
+  }
+
+  _removeOccurence(int id) {
+    setState(() {
+      _occurences.removeWhere((oc) {
+        return oc.id == id;
+      });
+    });
   }
 
   void _openOccurenceCreateModal(BuildContext context) {
@@ -105,7 +91,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: <Widget>[
             OccurenceGraph(recentOccurences: _recentOccurences),
-            OccurenceCard(occurences: _occurences)
+            OccurenceCard(occurences: _occurences, onRemove: _removeOccurence)
           ]
         ),
       ),
