@@ -79,7 +79,7 @@ class OccurenceCard extends StatelessWidget {
                                   color: Colors.grey
                                 )
                               ),
-                              Text(oc.value!.toStringAsFixed(2)),
+                              Text(oc.value.toStringAsFixed(2)),
                             ]
                           ),
                         ),

@@ -23,7 +23,7 @@ class OccurenceGraph extends StatelessWidget {
         bool sameYear = recentOccurences[i].date.year == weekDay.year;
 
         if (sameDay && sameMonth && sameYear) {
-          sum += recentOccurences[i].value!;
+          sum += recentOccurences[i].value;
         }
       }
 

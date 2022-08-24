@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 class OcurrenceCreate extends StatefulWidget {
   const OcurrenceCreate({required this.onSubmit, super.key});
 
-  final void Function(String, String, double?, DateTime) onSubmit;
+  final void Function(String, String, double, DateTime) onSubmit;
 
   @override
   State<OcurrenceCreate> createState() => _OcurrenceCreateState();
