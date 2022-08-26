@@ -42,25 +42,28 @@ class OccurenceGraph extends StatelessWidget {
 
   @override 
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 6,
-      margin: const EdgeInsets.all(20),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: onGroupOccurences.map((occ) {
-            return Flexible(
-              fit: FlexFit.tight,
-              child: GraphBar(
-                day: occ['day'] as String, 
-                value: occ['value'] as double,
-                percentage: _weekTotalValue == 0 ? 0 : (occ['value'] as double) / _weekTotalValue,
-              ),
-            );
-          }).toList(),
-        ),
-      )
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.4,
+      child: Card(
+        elevation: 6,
+        margin: const EdgeInsets.all(20),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: onGroupOccurences.map((occ) {
+              return Flexible(
+                fit: FlexFit.tight,
+                child: GraphBar(
+                  day: occ['day'] as String, 
+                  value: occ['value'] as double,
+                  percentage: _weekTotalValue == 0 ? 0 : (occ['value'] as double) / _weekTotalValue,
+                ),
+              );
+            }).toList(),
+          ),
+        )
+      ),
     );
   }
 }

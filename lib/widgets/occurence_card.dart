@@ -14,93 +14,98 @@ class OccurenceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final noOccurences = 
+    LayoutBuilder(
+      builder: (ctx, constraints) {
+        return Column(
+          children: <Widget>[
+            SizedBox(height: constraints.maxHeight * 0.05),
+            const Text(
+              'No occurences!'
+            ),
+            SizedBox(height: constraints.maxHeight * 0.05),
+            SizedBox(
+              height: constraints.maxHeight * 0.6,
+              child: Image.asset(
+                'assets/images/waiting.png',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ]
+        );
+      }
+    );
+
     return Center(
-      child: SizedBox(
-        height: 500,
-        child: occurences.isEmpty 
-        ? Column(
-            children: <Widget>[
-              const SizedBox(height: 20),
-              const Text(
-                'No occurences!'
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                height: 200,
-                child: Image.asset(
-                  'assets/images/waiting.png',
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ]
-          )
-        : ListView.builder(
-            itemCount: occurences.length, 
-            itemBuilder: (ctx, i) {
-              final Occurence oc = occurences[i];
-              return Card(
-                child: Stack(
-                  children: <Widget>[ 
-                    Row(
-                      children: <Widget>[
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 15, 
-                            vertical: 10
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Theme.of(context).primaryColor,
-                              width: 1,
-                            )
-                          ),
-                          padding: const EdgeInsets.all(10),
-                          child: Text(DateFormat('d MMM y').format(oc.date),
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
+      child: occurences.isEmpty 
+      ? noOccurences
+      : ListView.builder(
+          itemCount: occurences.length, 
+          itemBuilder: (ctx, i) {
+            final Occurence oc = occurences[i];
+            return Card(
+              child: Stack(
+                children: <Widget>[ 
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 15, 
+                          vertical: 10
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border.all(
                             color: Theme.of(context).primaryColor,
-                            )
-                          ),
+                            width: 1,
+                          )
                         ),
-                        Flexible(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                oc.title,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                )
-                              ),
-                              Text(
-                                oc.text,
-                                style: const TextStyle(
-                                  color: Colors.grey
-                                )
-                              ),
-                              Text(oc.value.toStringAsFixed(2)),
-                            ]
-                          ),
+                        padding: const EdgeInsets.all(10),
+                        child: Text(DateFormat('d MMM y').format(oc.date),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColor,
+                          )
                         ),
-                      ]
-                    ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: IconButton(
-                        color: Colors.red,
-                        onPressed: () {
-                          onRemove(oc.id);
-                        },
-                        icon: const Icon(Icons.delete)
-                      )
+                      ),
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              oc.title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              )
+                            ),
+                            Text(
+                              oc.text,
+                              style: const TextStyle(
+                                color: Colors.grey
+                              )
+                            ),
+                            Text(oc.value.toStringAsFixed(2)),
+                          ]
+                        ),
+                      ),
+                    ]
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      color: Colors.red,
+                      onPressed: () {
+                        onRemove(oc.id);
+                      },
+                      icon: const Icon(Icons.delete)
                     )
-                  ]
-                ),
-              );
-            }
-          ),
-      ),
+                  )
+                ]
+              ),
+            );
+          }
+        ),
     );
   }
 }
