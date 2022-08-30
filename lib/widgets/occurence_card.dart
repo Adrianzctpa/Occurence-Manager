@@ -1,111 +1,104 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models/occurence.dart';
 
-class OccurenceCard extends StatelessWidget {
+class OccurenceCard extends StatefulWidget {
   const OccurenceCard({
-    required this.occurences, 
+    required this.occurence, 
     required this.onRemove, 
     super.key
   });
 
-  final List<Occurence> occurences;
+  final Occurence occurence;
   final void Function(int id) onRemove;
 
   @override
+  State<OccurenceCard> createState() => _OccurenceCardState();
+}
+
+class _OccurenceCardState extends State<OccurenceCard> {
+  static const colors = [
+    Colors.red,
+    Colors.purple,
+    Colors.orange,
+    Colors.blue,
+    Colors.black,
+  ];
+
+  Color? _bgColor;
+
+  @override 
+  void initState () {
+    super.initState();
+
+    int i = Random().nextInt(colors.length);
+    _bgColor = colors[i];
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final oc = widget.occurence;
 
-    final noOccurences = 
-    LayoutBuilder(
-      builder: (ctx, constraints) {
-        return Column(
-          children: <Widget>[
-            SizedBox(height: constraints.maxHeight * 0.05),
-            const Text(
-              'No occurences!'
-            ),
-            SizedBox(height: constraints.maxHeight * 0.05),
-            SizedBox(
-              height: constraints.maxHeight * 0.6,
-              child: Image.asset(
-                'assets/images/waiting.png',
-                fit: BoxFit.cover,
-              ),
-            ),
-          ]
-        );
-      }
-    );
-
-    return Center(
-      child: occurences.isEmpty 
-      ? noOccurences
-      : ListView.builder(
-          itemCount: occurences.length, 
-          itemBuilder: (ctx, i) {
-            final Occurence oc = occurences[i];
-            return Card(
-              child: Stack(
-                children: <Widget>[ 
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 15, 
-                          vertical: 10
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Theme.of(context).primaryColor,
-                            width: 1,
-                          )
-                        ),
-                        padding: const EdgeInsets.all(10),
-                        child: Text(DateFormat('d MMM y').format(oc.date),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor,
-                          )
-                        ),
-                      ),
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              oc.title,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              )
-                            ),
-                            Text(
-                              oc.text,
-                              style: const TextStyle(
-                                color: Colors.grey
-                              )
-                            ),
-                            Text(oc.value.toStringAsFixed(2)),
-                          ]
-                        ),
-                      ),
-                    ]
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: IconButton(
-                      color: Colors.red,
-                      onPressed: () {
-                        onRemove(oc.id);
-                      },
-                      icon: const Icon(Icons.delete)
-                    )
+    return Card(
+      child: Stack(
+        children: <Widget>[ 
+          Row(
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 15, 
+                  vertical: 10
+                ),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: _bgColor as Color,
+                    width: 1,
                   )
-                ]
+                ),
+                padding: const EdgeInsets.all(10),
+                child: Text(DateFormat('d MMM y').format(oc.date),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: _bgColor as Color,
+                  )
+                ),
               ),
-            );
-          }
-        ),
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      oc.title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      )
+                    ),
+                    Text(
+                      oc.text,
+                      style: const TextStyle(
+                        color: Colors.grey
+                      )
+                    ),
+                    Text(oc.value.toStringAsFixed(2)),
+                  ]
+                ),
+              ),
+            ]
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: IconButton(
+              color: Colors.red,
+              onPressed: () {
+                widget.onRemove(oc.id);
+              },
+              icon: const Icon(Icons.delete)
+            )
+          )
+        ]
+      ),
     );
   }
 }

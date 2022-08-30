@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'models/occurence.dart';
 import 'widgets/occurence_graph.dart';
-import 'widgets/occurence_card.dart';
 import 'widgets/occurence_create.dart';
+import 'widgets/occurence_list.dart';
 
 void main() => runApp(const GeneralApp());
 
@@ -34,17 +34,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<Occurence> _occurences = [
-    Occurence(id: 1, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
-    Occurence(id: 2, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
-    Occurence(id: 3, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
-    Occurence(id: 4, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
-    Occurence(id: 5, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
-    Occurence(id: 7, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
-    Occurence(id: 6, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
-    Occurence(id: 8, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
-    Occurence(id: 9, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
-    Occurence(id: 10, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
-    Occurence(id: 11, title: 'a', text: 'a', value: 0.00, date: DateTime.now()) 
+    // Occurence(id: 1, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
+    // Occurence(id: 2, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
+    // Occurence(id: 3, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
+    // Occurence(id: 4, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
+    // Occurence(id: 5, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
+    // Occurence(id: 7, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
+    // Occurence(id: 6, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
+    // Occurence(id: 8, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
+    // Occurence(id: 9, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
+    // Occurence(id: 10, title: 'a', text: 'a', value: 0.00, date: DateTime.now()),
+    // Occurence(id: 11, title: 'a', text: 'a', value: 0.00, date: DateTime.now()) 
   ];
   bool _showGraph = false;
 
@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
     }).toList();
   } 
 
-  _addOccurence(String title, String detail, double value, DateTime date) {
+  void _addOccurence(String title, String detail, double value, DateTime date) {
     int id = _occurences.isEmpty ? 1 : (_occurences.last.id + 1);
     final Occurence occ = Occurence(
       id: id,
@@ -73,7 +73,7 @@ class _HomePageState extends State<HomePage> {
     Navigator.pop(context);
   }
 
-  _removeOccurence(int id) {
+  void _removeOccurence(int id) {
     setState(() {
       _occurences.removeWhere((oc) {
         return oc.id == id;
@@ -101,17 +101,13 @@ class _HomePageState extends State<HomePage> {
         if (isLandscape)
         IconButton(
           icon: const Icon(Icons.change_circle),
-          onPressed: () {
-            setState(() {
-              _showGraph = !_showGraph;
-            });
-          },
+          onPressed: () => setState(() {
+            _showGraph = !_showGraph;
+          })
         ),
         IconButton(
           icon: const Icon(Icons.add_box_outlined),
-          onPressed: () {
-            _openOccurenceCreateModal(context);
-          },
+          onPressed: () => _openOccurenceCreateModal(context)
         )
       ]
     );
@@ -133,7 +129,7 @@ class _HomePageState extends State<HomePage> {
           if (!_showGraph || !isLandscape)
           SizedBox(
             height: avHeight * 0.70,
-            child: OccurenceCard(
+            child: OccurenceList(
               occurences: _occurences, 
               onRemove: _removeOccurence
             )
@@ -147,9 +143,7 @@ class _HomePageState extends State<HomePage> {
       body: body,
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {
-          _openOccurenceCreateModal(context);
-        },
+        onPressed: () => _openOccurenceCreateModal(context)
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat
     );
